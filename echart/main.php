@@ -6,17 +6,12 @@ $con=new con("localhost","root","","zhidao");
 $con->connectMysql();
 $qquery_result=($con->query("excel"));
  $pageSize =5;
-// //褰撳墠椤电爜
 
-// //鎬婚〉鐮佸垵濮嬩负1
-// $pageAbsolute = 1;
-
-//鍏堝垽鏂璸age 鏄惁瀛樺湪
 if (isset($_GET['page'])) {
-    //灏嗗緱鍒扮殑椤电爜璧嬪�肩粰鍙橀噺
+   
     $page = $_GET['page'];
 
-    //濡傛灉椤甸潰鍊间负绌烘垨灏忎簬闆舵垨涓嶆槸鏁板瓧锛屽垯榛樿涓�1
+    
     if (empty($page) || $page <= 0 || !is_numeric($page)) {
         $page = 1;
     } else {
@@ -24,18 +19,18 @@ if (isset($_GET['page'])) {
     }
 }
 
-//鎬昏褰曟暟鐨凷QL
+
 $totalSql = "SELECT COUNT(*) FROM excel ";
 
-//寰楀埌鎬昏褰曟暟
+
 $total = mysqli_fetch_array(mysqli_query($db, $totalSql))[0];
 
-// //寰楀埌鎬婚〉鐮�
+
 // if ($total != 0) {
 //     $pageAbsolute = ceil($total / $pageSize);
 // }
 
-//璁＄畻褰撳墠椤电爜鍦ㄤ粠绗嚑鏉″紑濮�
+
 $num = ($page - 1) * $pageSize;
 //include('fenyelei1.php');    //引入类
 
