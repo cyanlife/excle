@@ -2,22 +2,33 @@
 header("Content-Type: text/html; charset=UTF-8");
 
 class con{
-    
+    private static $instance=null;
+    private $conn=null;
 private $dbhost;
 		private $dbuser;
 		private $dbpwd;
 		private $dbname;
-		public  $conn;
-		function __construct($dbhost, $dbuser, $dbpwd, $dbname) {
-			$this->dbhost = $dbhost;
-			$this->dbuser = $dbuser;
-			$this->dbpwd  = $dbpwd;
-			$this->dbname = $dbname;
-		}
-		public function connectMysql() {
-			$this->conn = mysqli_connect($this->dbhost, $this->dbuser, $this->dbpwd);
+		private function __construct($config=array()) {
+			
+ 			$this->conn = mysqli_connect($config['db_host'],$config['db_user'],$config['db_pass']);
+// 		    $dsn = sprintf('mysql:host=%s;dbname=%s', $config['db_host'], $config['db_name']);
+// 		    $this->conn = new PDO($dsn, $config['db_user'], $config['db_pass']);
 			mysqli_set_charset($this->conn, "utf8");
-			mysqli_select_db($this->conn, $this->dbname);
+			mysqli_select_db($this->conn, $config['db_name']);
+		}
+		public  static function connectMysql($config=array()) {
+			if(self::$instance==null){
+			    self::$instance=new self($config);
+			}
+			return self::$instance;			    
+			
+		}
+		
+		
+		// 获取数据库句柄方法
+		public function db()
+		{
+		    return $this->conn;
 		}
    public function add(){
         
@@ -33,8 +44,8 @@ private $dbhost;
         }
         
     }
-    public function query($table){
-        $sql="select * from ".$table."";
+    public function query($table,$requirename,$requirevalue){
+        $sql="select * from ".$table." where ".$requirename."='".$requirevalue."'";
         $query_result=mysqli_query($this->conn, $sql);
         //$query_rows=mysqli_fetch_array($result, MYSQLI_ASSOC);
         return  $query_result;

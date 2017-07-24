@@ -256,7 +256,6 @@ myChart.setOption(option);**/
     
     myChart.setOption(option);
 
-  
     option1 = {
     	    tooltip: {
     	        trigger: 'item',
@@ -299,6 +298,9 @@ myChart.setOption(option);**/
     	                    
    
 myChart1.setOption(option1);
+myChart1.on('click', function (params) {
+    window.open('filter.php?filtername=' + encodeURIComponent(params.name));
+});
 /*
  * 统计饼图 3
  */
